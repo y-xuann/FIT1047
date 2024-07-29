@@ -1,0 +1,435 @@
+﻿// Template for assignment 2 - Strings - Tasks from 2.3 to 2.7
+
+/////////////////////////////////////////////////////
+/ Code for your main program to call the subroutine
+/////////////////////////////////////////////////////
+/JnS Task2.3
+
+/JnS Task2.4
+
+/JnS Task2.5
+
+/JnS Task2.6
+
+/JnS Task2.7
+
+/ Finish execution
+Halt
+
+/ Subroutines to perform Task2.3
+Task2.3,	HEX 0
+			/Load the location of the starting character of myName and store in PrintFrom
+            Load myNameADR  
+            Add One
+            Store PrintFrom
+			
+            /Load the first address in myName which indicates the size of string
+            Load myName
+            Store PrintCharactersRemaining
+           
+            JnS subPrint
+            JumpI Task2.3
+
+/ Subroutine to call and perform Task 2.4
+Task2.4,	HEX 0
+			/Load the address where the input characters should be stored
+            Load CurrentCharacterLocation
+            Store InputStringStart
+            JnS subRead
+            
+            /Load the size of the string and store at the specific address (HEX 100)
+            Load InputStringStart
+			StoreI PrintCharactersRemaining
+            JumpI Task2.4
+
+/ Subroutine to call and perform Task 2.5
+Task2.5,	HEX 0
+			/Load the address where the input characters should be stored
+            Load CurrentCharacterLocation
+            Store InputStringStart
+            Jns subRead
+            
+            /Load the size of the string and store at the specific address (HEX 100)            
+            Load InputStringStart
+			StoreI PrintCharactersRemaining
+
+			/Load the first character location and store as the argument
+          	/to pass into the subroutine subUpperCase
+            Load FirstCharacterLocation
+            Store CharToUpperAdr
+            JnS subUpperCase
+            
+            /Load the size of the string and store as the remaining characters 
+            /to be used in the subroutine subPrint
+          	Load InputStringStart
+         	Store  PrintCharactersRemaining
+
+			/Load first character location and store inside the argument 
+            /to pass into the subroutine subPrint
+            Load FirstCharacterLocation
+            Store PrintFrom
+            JnS subPrint
+            JumpI Task2.5
+            
+/ Subroutine to call and perform Task 2.6
+Task2.6,	HEX 0
+			/Load the address where the input characters should be stored
+            Load CurrentCharacterLocation
+            Store InputStringStart
+            Jns subRead
+
+            /Load the size of the string and store at the specific address (HEX 100)   
+            Load InputStringStart
+			StoreI PrintCharactersRemaining
+
+			/Load the first character location and store as the argument
+          	/to pass into the subroutine subUpperCase
+            Load FirstCharacterLocation
+            Store CharToUpperAdr
+            JnS subUpperCase
+
+			/Load the first character location and store as the argument
+          	/to pass into the subroutine subROT13
+            Load FirstCharacterLocation
+            Store UpperToRotADR
+            JnS subROT13
+
+            /Load the size of the string and store as the remaining characters 
+            /to be used in the subroutine subPrint
+            Load InputStringStart
+            Store PrintCharactersRemaining
+
+			/Load first character location and store inside the argument 
+            /to pass into the subroutine subPrint
+            Load FirstCharacterLocation
+            Store PrintFrom
+            JnS subPrint
+            JumpI Task2.6
+
+/ Subroutine to call and perform Task 2.7
+Task2.7,	HEX 0
+			/Load the address where the input characters should be stored
+            Load CurrentCharacterLocation
+            Store InputStringStart
+            Jns subRead
+            
+            /Load the size of the string and store at the specific address (HEX 100)           
+            Load InputStringStart
+			StoreI PrintCharactersRemaining
+            
+			/Load the first character location and store as the argument
+          	/to pass into the subroutine subSROT13
+            Load FirstCharacterLocation
+            Store SpecialCharADR
+            JnS subSROT13
+
+			/Load the first character location and store as the argument
+          	/to pass into the subroutine subROT13
+            Load FirstCharacterLocation
+            Store UpperToRotADR
+            JnS subROT13
+
+            /Load the size of the string and store as the remaining characters 
+            /to be used in the subroutine subPrint
+            Load InputStringStart
+            Store PrintCharactersRemaining
+
+			/Load first character location and store inside the argument 
+            /to pass into the subroutine subPrint
+            Load FirstCharacterLocation
+            Store PrintFrom
+            JnS subPrint
+            JumpI Task2.7
+
+///////////////////////////////////////////////
+/ Task 2.3 - Subroutine for printing strings
+///////////////////////////////////////////////
+
+/ PrintFrom acts as an argument to store the address of a string
+PrintFrom,     HEX 0 
+
+/ subroutine to print the character by character to form a string
+subPrint,           HEX 0     
+CheckChar,			Load PrintCharactersRemaining
+
+					/If the remaining characters = 0, end the loop and the subroutine
+                    Skipcond 400
+                    Jump ContPrint
+                    Jump EndPrint
+
+/ If there are remaining characters, output the character
+ContPrint,     		LoadI PrintFrom
+                    Output
+                    
+                    / Update and store the location of the character to the next character
+                    Load PrintFrom
+                    Add One
+                    Store PrintFrom 
+
+					/ Update and store the remaining characters
+                    Load PrintCharactersRemaining
+					Subt One
+                    Store PrintCharactersRemaining
+                    Jump CheckChar
+
+/ exit the subroutine
+EndPrint, 			JumpI subPrint
+
+
+///////////////////////////////////////////////
+/ Task 2.4 - subroutine for string input
+///////////////////////////////////////////////
+
+/ InputStringStart acts as an argument to store the address of a string
+InputStringStart, HEX 0 
+
+/ subroutine to allow user to input character until integer 0 is entered
+subRead, 			HEX 0     
+LoopRead,			Input
+                    Store InputChar / Store the Input character into a temporary variable (InputChar)
+
+                    Load InputChar  
+                     / If the input is 0, store the size of the string into InputStringStart
+					Skipcond 400
+                    Jump ContRead 
+                    Load Counter
+                    Store InputStringStart 
+                    JumpI subRead / return from the subroutine
+
+/ Else-If the input is not 0,
+/ Store the input character into the location of current character location
+ContRead,			Load InputChar
+                    StoreI CurrentCharacterLocation
+
+                    /Increase the counter by one for each loop which act as the size of the string
+                    Load Counter
+                    Add One
+                    Store Counter
+
+                    /Increment the store location by one and start the loop again
+                    Load CurrentCharacterLocation
+                    Add One
+                    Store CurrentCharacterLocation
+                    Jump LoopRead
+        
+//////////////////////////////////////////////////
+/ Task 2.5 - subroutine to convert to upper case
+//////////////////////////////////////////////////
+/ CharToUpperAdr acts as an argument to store the address of a string
+CharToUpperAdr, HEX 0
+
+/ subroutine to convert the lower case into upper case
+subUpperCase, 			HEX 0     
+/ If Character < 'a', check next character
+CheckLowUpper,		  	LoadI	CharToUpperAdr
+                      	Subt	Char-a
+                      	Skipcond 000
+                      	Jump	CheckUpUpper
+                      	Jump	NextChar
+                
+/ Else-If Character > 'z', check next character
+CheckUpUpper,		  	LoadI	CharToUpperAdr
+                      	Subt	Char-z
+                      	Skipcond 800
+                      	Jump	ConvertUpper
+                      	Jump	NextChar
+
+/ Else, Convert to Upper case by subtracting the difference
+ConvertUpper,			LoadI	CharToUpperAdr
+						Subt	Up-Low
+						StoreI	CharToUpperAdr / Store back in the same memory
+            			Jump NextChar
+
+/ Update the address to store the next character
+NextChar,  				Load CharToUpperAdr
+                        Add One
+                        Store CharToUpperAdr
+
+                        /If there are no character in the new address, exit the loop
+                        LoadI CharToUpperAdr
+                        Skipcond 400
+                        Jump CheckLowUpper
+                        Jump FinishConvUpper
+       
+/ return from subroutine
+FinishConvUpper, 		JumpI	subUpperCase
+
+//////////////////////////////////////
+/ Task 2.6 - subroutine for ROT13
+//////////////////////////////////////
+
+/ UpperToRotADR act as an argument to store the address of the string
+UpperToRotADR,	HEX 0 
+
+/ subroutine to convert the alphanumeric character to ROT13
+subROT13, 				HEX 0 
+/If Character <'A', check next character (as it is non-alphabet)
+CheckUpperAddFirst,		LoadI	UpperToRotADR
+						Subt	Char-A
+						Skipcond 000
+						Jump	CheckUpperAddSecond 
+                		Jump	NextCharROT 
+
+/Else-if character > 'M', continue checking whether it falls in lower case range
+/Else-if character < 'N', convert by adding
+CheckUpperAddSecond, 	LoadI UpperToRotADR
+					 	Subt	Char-M
+					 	Skipcond 800 
+					 	Jump	ConvertROTAdd 
+                	 	Jump	CheckUpperSubtSecond 
+
+/Else-if character > 'Z', check it is in lower case range or not
+/Else-if character =< 'Z', convert by subtracting
+CheckUpperSubtSecond,	LoadI UpperToRotADR
+						Subt	Char-Z
+					 	Skipcond 800 
+					 	Jump	ConvertROTSubt
+                	 	Jump	CheckLowerAddFirst                
+
+/Else-if character < 'a', check next character (as it is non-alphabet)
+CheckLowerAddFirst,		LoadI	UpperToRotADR
+						Subt	Char-a
+						Skipcond 000 
+						Jump	CheckLowerAddSecond 
+                		Jump	NextCharROT 
+                        
+/Else-if character > 'm', convert by subtracting
+/Else-if character < 'n', convert by adding
+CheckLowerAddSecond, 	LoadI UpperToRotADR
+					 	Subt	Char-m
+					 	Skipcond 800 
+					 	Jump	ConvertROTAdd 
+                	 	Jump	CheckLowerSubtSecond  
+
+/Else-if character > 'z', check next character (as it is non-alphabet)
+/Else-if character =< 'z', convert by subtracting 
+CheckLowerSubtSecond,	LoadI UpperToRotADR
+						Subt	Char-z
+					 	Skipcond 800 
+					 	Jump	ConvertROTSubt
+                	 	Jump	NextCharROT 
+                        
+/Convert to ROT13 by adding or subtracting the difference                
+ConvertROTSubt, 		LoadI UpperToRotADR
+						Subt ROT-diff
+						StoreI UpperToRotADR / Store back in the same memory
+                		Jump NextCharROT
+
+ConvertROTAdd,  		LoadI UpperToRotADR
+						Add ROT-diff
+						StoreI UpperToRotADR / Store back in the same memory
+                		Jump NextCharROT      
+
+/Update the address to store the next character
+NextCharROT,    		Load UpperToRotADR
+            			Add One
+            			Store UpperToRotADR
+            
+                        LoadI UpperToRotADR
+                        /If there are no character in the new address, exit the loop
+                        /If there are still characters, continue checking
+                        Skipcond 400
+                        Jump CheckUpperAddFirst
+                        Jump FinishConvROT
+       
+/ return from subroutine
+FinishConvROT, 			JumpI	subROT13
+
+///////////////////////////////////////////////////////////////////////
+/ Task 2.7 - alternative subroutine for ROT13 with special characters
+///////////////////////////////////////////////////////////////////////
+
+/ SpecialCharADR act as an argument to store the address of the string
+SpecialCharADR,	HEX 0
+
+/ subroutine to convert the special character by shifting above 2200(base 16) on the special characters
+subSROT13, 				HEX 0
+
+/If Character <'A', convert by adding (First group of special character)
+CheckSROTFirst,  		LoadI SpecialCharADR
+          				Subt	Char-A 
+                        Skipcond 000 
+                        Jump CheckSROTUpperCase
+                        Jump ConvertSChar
+                        
+//If Character <'Z', the character is an uppercase alphabet, check next character
+/If Character >'Z', continue checking
+CheckSROTUpperCase,		LoadI SpecialCharADR
+						Subt	Char-Z 
+          				Skipcond 800  
+                        Jump NextCharSROT
+                        Jump CheckSROTSecond
+                        
+/If Character <'a', convert by adding (Second group of special character)                 
+CheckSROTSecond,		LoadI SpecialCharADR
+						Subt	Char-a 
+          				Skipcond 000 
+                        Jump CheckSROTThird
+                        Jump ConvertSChar
+                        
+/If Character <'z', convert by adding (Third group of special character)
+CheckSROTThird, 		LoadI SpecialCharADR
+						Subt	Char-z 
+          				Skipcond 800 
+                        Jump NextCharSROT 
+                        Jump ConvertSChar
+                        
+/Convert the special character by adding 2200 (base16)
+ConvertSChar, 			LoadI SpecialCharADR
+						Add Symbols
+                    	StoreI SpecialCharADR /Store back to the same memory
+                        
+/Update the address and store the next character
+NextCharSROT,    	  	Load SpecialCharADR
+                      	Add One
+                      	Store SpecialCharADR
+
+                      	LoadI SpecialCharADR
+                        /If there are no character in the new address, exit the loop
+                        /If there are still characters, continue checking
+                      	Skipcond 400
+                      	Jump CheckSROTFirst
+                      	Jump FinishConvSROT
+                        
+/ Return to the subroutine                      
+FinishConvSROT, 		JumpI	subSROT13
+
+///////////////////////////////////////////////////////////////////
+
+/Variables used 
+
+PrintCharactersRemaining, HEX 100 
+CurrentCharacterLocation, HEX 101 
+FirstCharacterLocation, HEX 101
+One, DEC 001
+InputChar, HEX 0
+Counter, DEC 0
+
+Char-a,		HEX 61
+Char-z,		HEX 7A
+Up-Low,		HEX 20
+
+Char-A,		HEX 41
+Char-m,		HEX 6D
+Char-Z, 	HEX 5A
+Char-M,		HEX 4D
+ROT-diff, 	HEX D
+
+Symbols,	HEX 2200
+
+myNameADR, ADR myName
+myName,	HEX 00E /'length of string'
+		HEX 059 /'Y'
+        HEX 061 /'a'
+        HEX 06E /'n'
+        HEX 067 /'g
+        HEX 020 /' '
+        HEX 058 /'X'
+        HEX 075 /'u'
+        HEX 061 /'a'
+        HEX 06E /'n'
+        HEX 020 /' '
+        HEX 043 /'C'
+        HEX 068 /'h'
+        HEX 065 /'e'
+        HEX 077 /'w'

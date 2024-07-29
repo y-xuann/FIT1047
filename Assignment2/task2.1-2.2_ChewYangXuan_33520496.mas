@@ -1,0 +1,51 @@
+﻿// Template for assignment 2 - Strings - Task 2.1, 2.2
+
+////////////////////////////////
+/ Task 2.2: Print
+////////////////////////////////
+
+Loop, LoadI CurrentCharacterLocation 
+	  Output
+      
+      /Increase the location by one after each output to output next character
+      Load CurrentCharacterLocation
+	  Add One
+      Store CurrentCharacterLocation
+      
+      /Decrease the remaining characters by one after each output
+      Load PrintCharactersRemaining
+	  Subt One
+	  Store PrintCharactersRemaining
+  
+      Load PrintCharactersRemaining
+	  /If there are no more characters remaining, exit the loop
+      Skipcond 400
+      Jump Loop
+      Jump End
+	
+End, Halt
+
+/Variables used
+CurrentCharacterLocation, HEX 011
+PrintCharactersRemaining, HEX 00E
+One, DEC 001
+
+////////////////////////////////
+/ Task 2.1: Your name
+////////////////////////////////
+
+myName,	HEX 00E /'length of string'
+		HEX 059 /'Y'
+        HEX 061 /'a'
+        HEX 06E /'n'
+        HEX 067 /'g
+        HEX 020 /' '
+        HEX 058 /'X'
+        HEX 075 /'u'
+        HEX 061 /'a'
+        HEX 06E /'n'
+        HEX 020 /' '
+        HEX 043 /'C'
+        HEX 068 /'h'
+        HEX 065 /'e'
+        HEX 077 /'w'
