@@ -1,7 +1,7 @@
 # FIT1047
 Introduction to computer systems, networks and security
 
-Overview
+#### Overview
 - Provides basic knowledge of computer organisation and architecture
 - Introduces the concepts of security goals for protecting common modern computer systems
 - Apply number representations and boolean algebra to analyse simple logic circuits
